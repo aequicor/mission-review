@@ -8,6 +8,7 @@ internal fun MissionReviewStart.toInitialConfig(): MissionReviewConfig =
         MissionReviewStart.DesktopCompose -> ProjectSelectionConfig
         is MissionReviewStart.IntelliJPlatform ->
             LocalReviewConfig(
+                projectPath = projectPath,
                 canNavigateBack = false,
                 description = intellijDescriptionFor(projectPath = projectPath),
             )

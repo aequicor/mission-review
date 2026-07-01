@@ -1,19 +1,30 @@
 package com.aequicor.missionreview.core.navigation
 
+import com.aequicor.missionreview.core.storage.RecentProject
 import com.arkivanov.decompose.value.Value
 
 /**
- * Placeholder contract for selecting a project in the standalone desktop flow.
+ * Contract for selecting a project in the standalone desktop flow.
  */
 interface ProjectSelectionComponent {
 
     /**
-     * Static placeholder model for the current skeleton screen.
+     * Current project-selection screen state.
      */
     val model: Value<ProjectSelectionModel>
 
     /**
-     * Advances to the review placeholder.
+     * Opens the target directory picker.
      */
-    fun onOpenProjectClicked()
+    fun onChooseProjectClicked()
+
+    /**
+     * Opens a previously remembered project.
+     */
+    fun onRecentProjectClicked(project: RecentProject)
+
+    /**
+     * Clears a recoverable error message.
+     */
+    fun onDismissErrorClicked()
 }

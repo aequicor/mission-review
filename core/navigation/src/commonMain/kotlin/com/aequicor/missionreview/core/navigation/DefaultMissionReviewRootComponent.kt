@@ -18,6 +18,7 @@ import com.arkivanov.decompose.value.Value
 class DefaultMissionReviewRootComponent(
     componentContext: ComponentContext,
     start: MissionReviewStart,
+    private val projectServices: MissionReviewProjectServices = MissionReviewProjectServices(),
 ) : MissionReviewRootComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MissionReviewConfig>()
@@ -47,9 +48,12 @@ class DefaultMissionReviewRootComponent(
             component =
                 DefaultProjectSelectionComponent(
                     componentContext = componentContext,
-                    onOpenReview = {
+                    directoryPicker = projectServices.directoryPicker,
+                    recentProjectsStore = projectServices.recentProjectsStore,
+                    onOpenReview = { projectPath ->
                         navigation.pushNew(
                             LocalReviewConfig(
+                                projectPath = projectPath,
                                 canNavigateBack = true,
                             ),
                         )
@@ -65,11 +69,11 @@ class DefaultMissionReviewRootComponent(
             component =
                 DefaultLocalReviewComponent(
                     componentContext = componentContext,
-                    model =
-                        LocalReviewModel(
-                            description = config.description,
-                            canNavigateBack = config.canNavigateBack,
-                        ),
+                    projectPath = config.projectPath,
+                    canNavigateBack = config.canNavigateBack,
+                    fallbackDescription = config.description,
+                    projectInspector = projectServices.projectInspector,
+                    projectInspectionExecutor = projectServices.projectInspectionExecutor,
                     onBackRequested = navigation::pop,
                 ),
         )
