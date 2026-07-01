@@ -7,6 +7,11 @@ out/
 ### Kotlin ###
 .kotlin
 
+### Gradle ###
+.gradle/
+build/
+**/build/
+
 ### Eclipse ###
 .apt_generated
 .classpath
