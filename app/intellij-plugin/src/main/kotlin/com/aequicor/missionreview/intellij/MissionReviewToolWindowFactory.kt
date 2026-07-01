@@ -1,28 +1,45 @@
 package com.aequicor.missionreview.intellij
 
+import com.aequicor.missionreview.core.navigation.DefaultMissionReviewRootComponent
+import com.aequicor.missionreview.core.navigation.MissionReviewStart
+import com.aequicor.missionreview.ui.intellij.MissionReviewIntellijPanel
+import com.arkivanov.decompose.DefaultComponentContext
+import com.arkivanov.essenty.lifecycle.LifecycleRegistry
+import com.arkivanov.essenty.lifecycle.destroy
+import com.arkivanov.essenty.lifecycle.resume
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
-import com.intellij.ui.components.JBLabel
 import com.intellij.ui.content.ContentFactory
-import java.awt.BorderLayout
-import javax.swing.JPanel
-import javax.swing.SwingConstants
 
 /**
- * Creates the placeholder Local review tool window.
+ * Creates the Local review tool window.
  */
 class MissionReviewToolWindowFactory : ToolWindowFactory, DumbAware {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val panel = JPanel(BorderLayout())
-        val label = JBLabel("mission-review placeholder").apply {
-            horizontalAlignment = SwingConstants.CENTER
+        val lifecycle = LifecycleRegistry()
+        val root =
+            DefaultMissionReviewRootComponent(
+                componentContext = DefaultComponentContext(lifecycle = lifecycle),
+                start = MissionReviewStart.IntelliJPlatform(
+                    projectPath = project.basePath.orEmpty(),
+                ),
+            )
+        val panel = MissionReviewIntellijPanel(root)
+        val disposable = Disposer.newDisposable("mission-review Local review")
+
+        lifecycle.resume()
+
+        Disposer.register(disposable) {
+            panel.dispose()
+            lifecycle.destroy()
         }
-        panel.add(label, BorderLayout.CENTER)
 
         val content = ContentFactory.getInstance().createContent(panel, "Local review", false)
+        content.setDisposer(disposable)
         toolWindow.contentManager.addContent(content)
     }
 }

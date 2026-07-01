@@ -10,4 +10,5 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":feature:entrypoint:api"))
     implementation(project(":feature:review:api"))
+    implementation(libs.decompose.extensions.compose)
 }
