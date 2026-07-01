@@ -1,0 +1,14 @@
+<idea-plugin>
+    <id>com.aequicor.mission-review</id>
+    <name>mission-review</name>
+    <vendor>Aequicor</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow
+            id="Local review"
+            anchor="right"
+            factoryClass="com.aequicor.missionreview.intellij.MissionReviewToolWindowFactory" />
+    </extensions>
+</idea-plugin>
