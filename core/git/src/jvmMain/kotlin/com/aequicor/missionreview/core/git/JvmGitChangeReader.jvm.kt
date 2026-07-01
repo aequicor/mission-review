@@ -2,6 +2,9 @@ package com.aequicor.missionreview.core.git
 
 import java.io.File
 
+/**
+ * JVM Git change reader backed by the local Git command-line client.
+ */
 class JvmGitChangeReader(
     private val processRunner: GitProcessRunner = GitProcessRunner(),
 ) : GitChangeReader {
@@ -14,7 +17,13 @@ class JvmGitChangeReader(
                 GitChangedFile(
                     path = path,
                     status = GitChangeStatus.STAGED,
-                    diff = processRunner.run(repository.rootPath, "diff", "--cached", "--", path),
+                    diff = processRunner.run(
+                        repository.rootPath,
+                        "diff",
+                        "--cached",
+                        "--",
+                        path,
+                    ),
                 )
             }
 
@@ -25,7 +34,10 @@ class JvmGitChangeReader(
                 GitChangedFile(
                     path = path,
                     status = GitChangeStatus.UNTRACKED,
-                    content = File(repository.rootPath).resolve(path).takeIf { it.isFile }?.readText(),
+                    content = File(repository.rootPath)
+                        .resolve(path)
+                        .takeIf { it.isFile }
+                        ?.readText(),
                 )
             }
 
@@ -39,7 +51,13 @@ class JvmGitChangeReader(
             .toList()
 }
 
+/**
+ * Runs Git commands in a repository working directory.
+ */
 class GitProcessRunner {
+    /**
+     * Runs `git [arguments]` in [repositoryRoot] and returns standard output.
+     */
     fun run(repositoryRoot: String, vararg arguments: String): String {
         val process = ProcessBuilder(listOf("git") + arguments)
             .directory(File(repositoryRoot))

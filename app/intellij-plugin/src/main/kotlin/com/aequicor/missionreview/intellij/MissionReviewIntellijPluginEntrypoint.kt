@@ -11,9 +11,17 @@ import com.aequicor.missionreview.feature.review.api.CodeNavigator
 import com.aequicor.missionreview.ui.intellij.IntellijCodeNavigator
 import com.aequicor.missionreview.ui.intellij.LocalReviewTabAdapter
 
+/**
+ * Creates local-review sessions for the IntelliJ plugin target.
+ *
+ * @property codeNavigator target-specific editor navigation adapter.
+ */
 class MissionReviewIntellijPluginEntrypoint(
     private val codeNavigator: IntellijCodeNavigator = IntellijCodeNavigator { _, _ -> },
 ) {
+    /**
+     * Creates a review flow bound to [projectRoot].
+     */
     fun createLocalReview(projectRoot: String): IntellijLocalReviewHandle {
         val lifecycleBridge = IntellijLifecycleBridge()
         val rootComponent = createRoot(lifecycleBridge)
@@ -42,11 +50,21 @@ class MissionReviewIntellijPluginEntrypoint(
     }
 }
 
+/**
+ * Owns the plugin review flow objects that must be disposed together.
+ *
+ * @property rootComponent root Decompose component for the review flow.
+ * @property adapter IntelliJ UI adapter for the review tab.
+ * @property lifecycleBridge lifecycle bridge disposed with this handle.
+ */
 data class IntellijLocalReviewHandle(
     val rootComponent: MissionReviewRootComponent,
     val adapter: LocalReviewTabAdapter,
     val lifecycleBridge: IntellijLifecycleBridge,
 ) {
+    /**
+     * Releases lifecycle-bound Decompose resources.
+     */
     fun dispose() {
         lifecycleBridge.dispose()
     }

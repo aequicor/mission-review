@@ -16,6 +16,7 @@ dependencies {
     implementation(project(":feature:review:impl"))
     implementation(project(":ui:compose"))
     implementation(libs.decompose)
+    implementation(libs.decompose.extensions.compose)
 }
 
 compose.desktop {

@@ -31,6 +31,9 @@ import com.aequicor.missionreview.core.navigation.MissionReviewRootComponent
 import com.aequicor.missionreview.feature.entrypoint.api.EntrypointComponent
 import com.aequicor.missionreview.feature.review.api.ReviewComponent
 
+/**
+ * Compose Desktop root content for mission-review.
+ */
 @Composable
 fun MissionReviewDesktopApp(rootComponent: MissionReviewRootComponent) {
     MaterialTheme {

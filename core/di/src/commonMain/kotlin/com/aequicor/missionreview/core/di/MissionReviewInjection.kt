@@ -15,11 +15,20 @@ import com.arkivanov.decompose.ComponentContext
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
+/**
+ * Target-provided bindings required by the shared review graph.
+ *
+ * @property gitChangeReader target Git reader implementation.
+ * @property codeNavigator target code navigation callback.
+ */
 data class MissionReviewTargetBindings(
     val gitChangeReader: GitChangeReader,
     val codeNavigator: CodeNavigator = CodeNavigator { _, _ -> },
 )
 
+/**
+ * Creates the shared Koin module for mission-review.
+ */
 fun missionReviewModule(targetBindings: MissionReviewTargetBindings): Module =
     module {
         single { targetBindings }
@@ -37,11 +46,17 @@ fun missionReviewModule(targetBindings: MissionReviewTargetBindings): Module =
         }
     }
 
+/**
+ * Factory that creates the root Decompose component with target dependencies.
+ */
 class MissionReviewRootFactory(
     private val gitChangeReader: GitChangeReader,
     private val mcpGateway: ReviewMcpGateway,
     private val codeNavigator: CodeNavigator,
 ) {
+    /**
+     * Creates a root component bound to [componentContext].
+     */
     fun create(componentContext: ComponentContext): MissionReviewRootComponent =
         DefaultMissionReviewRootComponent(
             componentContext = componentContext,

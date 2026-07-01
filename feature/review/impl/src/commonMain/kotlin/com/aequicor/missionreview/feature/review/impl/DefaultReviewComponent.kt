@@ -20,6 +20,9 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 
+/**
+ * Default review component backed by Git changes, MCP session storage and target navigation.
+ */
 class DefaultReviewComponent(
     componentContext: ComponentContext,
     projectRoot: String,
@@ -113,6 +116,9 @@ class DefaultReviewComponent(
     }
 }
 
+/**
+ * Exports collected review comments into deterministic plain text.
+ */
 object ReviewCommentExporter {
     fun export(state: ReviewState): String =
         buildString {
@@ -127,7 +133,11 @@ object ReviewCommentExporter {
             }
 
             state.comments
-                .sortedWith(compareBy<ReviewComment> { it.filePath }.thenBy { it.line ?: Int.MAX_VALUE }.thenBy { it.id })
+                .sortedWith(
+                    compareBy<ReviewComment> { it.filePath }
+                        .thenBy { it.line ?: Int.MAX_VALUE }
+                        .thenBy { it.id },
+                )
                 .forEachIndexed { index, comment ->
                     appendLine("${index + 1}. ${if (comment.required) "Required" else "Comment"}")
                     appendLine("File: ${comment.filePath}")

@@ -6,28 +6,74 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 
+/**
+ * Active top-level route of the mission-review flow.
+ */
 sealed interface MissionReviewRoute {
+    /**
+     * Project selection route.
+     */
     data object Entrypoint : MissionReviewRoute
+
+    /**
+     * Review route bound to [projectRoot].
+     */
     data class Review(val projectRoot: String) : MissionReviewRoute
 }
 
+/**
+ * Commands accepted by the root component navigation boundary.
+ */
 sealed interface MissionReviewNavigationCommand {
+    /**
+     * Opens review for [projectRoot].
+     */
     data class OpenReview(val projectRoot: String) : MissionReviewNavigationCommand
+
+    /**
+     * Returns to project selection.
+     */
     data object BackToEntrypoint : MissionReviewNavigationCommand
 }
 
+/**
+ * Active child component rendered by UI adapters.
+ */
 sealed interface MissionReviewChild {
+    /**
+     * Entrypoint child.
+     */
     data class Entrypoint(val component: EntrypointComponent) : MissionReviewChild
+
+    /**
+     * Review child.
+     */
     data class Review(val component: ReviewComponent) : MissionReviewChild
 }
 
+/**
+ * Root component contract shared by desktop and IntelliJ targets.
+ */
 interface MissionReviewRootComponent {
+    /**
+     * Observable active route.
+     */
     val route: Value<MissionReviewRoute>
+
+    /**
+     * Observable active child component.
+     */
     val child: Value<MissionReviewChild>
 
+    /**
+     * Applies a navigation [command].
+     */
     fun accept(command: MissionReviewNavigationCommand)
 }
 
+/**
+ * Default root component that owns top-level navigation state.
+ */
 class DefaultMissionReviewRootComponent(
     componentContext: ComponentContext,
     private val entrypointFactory: (ComponentContext, (String) -> Unit) -> EntrypointComponent,

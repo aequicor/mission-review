@@ -9,6 +9,9 @@ import com.arkivanov.essenty.lifecycle.resume
 import com.arkivanov.essenty.lifecycle.start
 import com.arkivanov.essenty.lifecycle.stop
 
+/**
+ * Bridges the IntelliJ plugin lifetime to a Decompose [LifecycleRegistry].
+ */
 class IntellijLifecycleBridge {
     private val lifecycle = LifecycleRegistry().also {
         it.create()
@@ -16,8 +19,14 @@ class IntellijLifecycleBridge {
         it.resume()
     }
 
+    /**
+     * Component context used as the root context for the plugin review flow.
+     */
     val componentContext = DefaultComponentContext(lifecycle)
 
+    /**
+     * Moves the Decompose lifecycle to destroyed state when the IDE-owned handle is disposed.
+     */
     fun dispose() {
         lifecycle.pause()
         lifecycle.stop()

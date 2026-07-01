@@ -3,11 +3,17 @@ package com.aequicor.missionreview.core.coderender
 import com.aequicor.missionreview.core.git.GitChangedFile
 import com.aequicor.missionreview.core.git.GitChangeStatus
 
+/**
+ * File status after mapping Git data to review UI data.
+ */
 enum class RenderedFileStatus {
     STAGED,
     UNTRACKED,
 }
 
+/**
+ * Rendered line category used by UI adapters.
+ */
 enum class RenderedLineType {
     CONTEXT,
     ADDITION,
@@ -15,18 +21,35 @@ enum class RenderedLineType {
     METADATA,
 }
 
+/**
+ * Rendered line shown in code or diff viewers.
+ *
+ * @property number one-based file line number when known.
+ * @property type semantic line type.
+ * @property text line content.
+ */
 data class RenderedLine(
     val number: Int?,
     val type: RenderedLineType,
     val text: String,
 )
 
+/**
+ * Rendered file shown in a review UI.
+ *
+ * @property path repository-relative file path.
+ * @property status rendered review status.
+ * @property lines rendered file or diff lines.
+ */
 data class RenderedReviewFile(
     val path: String,
     val status: RenderedFileStatus,
     val lines: List<RenderedLine>,
 )
 
+/**
+ * Maps a raw Git change to rendered review data.
+ */
 fun GitChangedFile.toRenderedReviewFile(): RenderedReviewFile =
     RenderedReviewFile(
         path = path,
@@ -37,6 +60,9 @@ fun GitChangedFile.toRenderedReviewFile(): RenderedReviewFile =
         },
     )
 
+/**
+ * Maps raw Git changes to rendered review data.
+ */
 fun List<GitChangedFile>.toRenderedReviewFiles(): List<RenderedReviewFile> =
     map(GitChangedFile::toRenderedReviewFile)
 

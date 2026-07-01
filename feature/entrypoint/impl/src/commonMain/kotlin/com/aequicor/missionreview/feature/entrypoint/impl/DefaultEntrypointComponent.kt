@@ -6,6 +6,9 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 
+/**
+ * Default entrypoint component that validates a project path and opens review.
+ */
 class DefaultEntrypointComponent(
     componentContext: ComponentContext,
     private val onOpenReview: (projectRoot: String) -> Unit,
