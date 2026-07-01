@@ -98,6 +98,10 @@ Current Gradle modules:
 - `feature:entrypoint:api` / `feature:entrypoint:impl` - project-selection flow.
 - `feature:review:api` / `feature:review:impl` - review flow and deterministic commentary export.
 
+Architecture notes:
+
+- [Navigation architecture](docs/navigation-ru.md) - Decompose root/component tree, desktop start mode, IntelliJ current-project-only mode, lifecycle ownership, and target adapter boundaries.
+
 ## Core Features
 
 - local project selection;
