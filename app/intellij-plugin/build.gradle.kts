@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    id("org.jetbrains.intellij.platform")
 }
 
 dependencies {
@@ -13,4 +14,8 @@ dependencies {
     implementation(project(":feature:review:impl"))
     implementation(project(":ui:intellij"))
     implementation(libs.decompose)
+
+    intellijPlatform {
+        intellijIdea("2024.3.6")
+    }
 }

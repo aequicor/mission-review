@@ -9,6 +9,7 @@ out/
 
 ### Gradle ###
 .gradle/
+.intellijPlatform/
 build/
 **/build/
 
