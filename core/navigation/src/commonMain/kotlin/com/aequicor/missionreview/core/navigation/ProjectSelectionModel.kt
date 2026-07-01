@@ -1,12 +1,18 @@
 package com.aequicor.missionreview.core.navigation
 
+import com.aequicor.missionreview.core.storage.RecentProject
+
 /**
- * Dumb placeholder state for the desktop project-selection screen.
+ * State for the desktop project-selection screen.
  *
  * @property title Screen title rendered by target UI adapters.
- * @property description Placeholder message rendered below the title.
+ * @property description Message rendered below the title.
+ * @property recentProjects Previously opened local projects.
+ * @property errorMessage Optional recoverable error message.
  */
 data class ProjectSelectionModel(
-    val title: String = "Project selection",
-    val description: String = "Project selection UI is not implemented yet.",
+    val title: String = "Open project",
+    val description: String = "Choose a local Git project to review changes.",
+    val recentProjects: List<RecentProject> = emptyList(),
+    val errorMessage: String? = null,
 )
