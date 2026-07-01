@@ -1,10 +1,8 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
+    id("missionreview.kotlin-multiplatform")
 }
 
 kotlin {
-    jvm()
-
     sourceSets {
         commonMain.dependencies {
             implementation(project(":feature:review:api"))
@@ -13,10 +11,6 @@ kotlin {
             implementation(project(":core:mcp"))
             implementation(project(":core:storage"))
             implementation(libs.decompose)
-        }
-
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
         }
     }
 }

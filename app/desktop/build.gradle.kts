@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    id("missionreview.kotlin-jvm")
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
 }
